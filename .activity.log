@@ -1663,3 +1663,4 @@
 // Improve serial encryption handling – 2025-09-27 18:13:13
 // Refactor bank report aggregation logic – 2025-09-27 18:30:37
 // Improve DB migrations – 2025-09-28 3:03:22
+// Enhance admin filtering – 2025-09-28 2:03:02
