@@ -1786,3 +1786,4 @@
 // Improve payment validation – 2025-10-13 10:06:14
 // Improve DB migrations – 2025-10-13 0:47:06
 // Improve payment validation – 2025-10-13 14:21:56
+// Refactor bank report aggregation logic – 2025-10-13 12:59:08
