@@ -2,7 +2,6 @@
 
 UMIS-Pay is a **Django-based payment and serial generation system** built for the University Management Information System (UMIS). It includes modules for serial code generation, bank reporting, and secure management of sensitive information.  
 
->  **Note:** This project uses `.env` for all sensitive settings and should **never push `settings.py`, `.env`, database files, or migration files** to the repository.
 
 ---
 
