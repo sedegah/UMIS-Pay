@@ -1,0 +1,90 @@
+﻿# ---------------------------
+# Django settings & secrets
+# ---------------------------
+umis_pay/settings.py
+.env
+.env.local
+local_settings.py
+secret_key.txt
+
+# ---------------------------
+# App migrations (except __init__.py)
+# ---------------------------
+*/migrations/
+!*/migrations/__init__.py
+
+# ---------------------------
+# Python cache / build files
+# ---------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.log
+*.bak
+*.old
+*.orig
+
+# ---------------------------
+# Database
+# ---------------------------
+db.sqlite3
+*.sqlite3
+
+# ---------------------------
+# Media / Static
+# ---------------------------
+media/
+staticfiles/
+
+# ---------------------------
+# Virtual environments
+# ---------------------------
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ---------------------------
+# IDE / editor files
+# ---------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# ---------------------------
+# OS files
+# ---------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------------------------
+# Cache / coverage / test files
+# ---------------------------
+*.tmp
+*.temp
+.cache/
+pytest_cache/
+.coverage
+.tox/
+.mypy_cache/
+coverage.xml
+
+# ---------------------------
+# Build / distribution
+# ---------------------------
+build/
+dist/
+*.egg
+.eggs/
+*.manifest
+*.spec

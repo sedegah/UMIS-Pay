@@ -1,0 +1,769 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report - UMIS-Pay | UESD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="icon" href="{% static 'serialgenerator/favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'serialgenerator/favicon.ico' %}" type="image/x-icon">
+    
+    <style>
+        :root { 
+            --uesd-green: #006747; 
+            --uesd-light-green: #4CAF50; 
+            --uesd-gold: #FFD700; 
+            --background-light: #f8f9fa; 
+            --text-dark: #333333; 
+            --text-light: #ffffff; 
+            --card-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--uesd-green) 0%, var(--uesd-light-green) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(255,255,255,0.3);
+            border-top: 6px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        .loading-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .loading-subtext {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .fade-out {
+            animation: fadeOut 0.5s ease-in-out forwards;
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        
+        /* Main Content Styles */
+        body { 
+            background: linear-gradient(135deg, var(--uesd-green) 0%, var(--uesd-light-green) 100%); 
+            min-height: 100vh; 
+            font-family: 'Poppins', sans-serif; 
+            padding: 15px; 
+            margin: 0; 
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+        .card { 
+            border: none; 
+            border-radius: 20px; 
+            box-shadow: var(--card-shadow); 
+            margin-bottom: 25px; 
+            overflow: hidden; 
+            transition: var(--transition); 
+            background: white;
+        }
+        .card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+        }
+        .card-header { 
+            background: linear-gradient(135deg, var(--uesd-green) 0%, var(--uesd-light-green) 100%); 
+            border-radius: 20px 20px 0 0 !important; 
+            padding: 25px; 
+            border: none; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .card-header::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            height: 4px; 
+            background: var(--uesd-gold); 
+        }
+        .card-header::after { 
+            content: ''; 
+            position: absolute; 
+            top: -50%; 
+            right: -50%; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(255,255,255,0.1); 
+            transform: rotate(30deg); 
+        }
+        .card-title { 
+            font-weight: 700; 
+            color: white; 
+            margin-bottom: 0; 
+            font-size: 1.5rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+            z-index: 1; 
+        }
+        .card-body { 
+            padding: 30px; 
+            background: #fff; 
+        }
+        .school-logo { 
+            width: 70px; 
+            height: 70px; 
+            border-radius: 50%; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-bottom: 15px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1); 
+            border: 3px solid var(--uesd-green); 
+            overflow: hidden; 
+            background: white; 
+            position: relative; 
+            z-index: 1; 
+            transition: var(--transition); 
+        }
+        .school-logo:hover { 
+            transform: scale(1.05); 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+        }
+        .school-logo img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+        .report-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+        }
+        .input-group { 
+            margin-bottom: 25px; 
+        }
+        .form-control { 
+            border-radius: 10px; 
+            border: 2px solid rgba(0,103,71,0.2); 
+            padding: 12px 15px; 
+            font-family: 'Poppins', sans-serif; 
+            transition: var(--transition); 
+        }
+        .form-control:focus { 
+            border-color: var(--uesd-green); 
+            box-shadow: 0 0 0 0.2rem rgba(0,103,71,0.25); 
+        }
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--uesd-green) 0%, var(--uesd-light-green) 100%); 
+            border: none; 
+            border-radius: 10px; 
+            padding: 12px 20px; 
+            font-weight: 600; 
+            transition: var(--transition); 
+            font-size: 0.95rem; 
+            box-shadow: 0 4px 10px rgba(0,103,71,0.3); 
+        }
+        .btn-primary:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 20px rgba(0,103,71,0.4); 
+        }
+        .btn-success { 
+            background: linear-gradient(135deg, var(--uesd-light-green) 0%, #2E8B57 100%); 
+            border: none; 
+            border-radius: 10px; 
+            padding: 12px 20px; 
+            font-weight: 600; 
+            transition: var(--transition); 
+            font-size: 0.95rem; 
+            box-shadow: 0 4px 10px rgba(76,175,80,0.3); 
+        }
+        .btn-success:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 20px rgba(76,175,80,0.4); 
+        }
+        .btn-outline-secondary { 
+            border: 2px solid var(--uesd-green); 
+            color: var(--uesd-green); 
+            border-radius: 10px; 
+            padding: 12px 20px; 
+            font-weight: 600; 
+            transition: var(--transition); 
+            font-size: 0.95rem; 
+            background: white; 
+        }
+        .btn-outline-secondary:hover { 
+            background-color: var(--uesd-green); 
+            color: white; 
+            transform: translateY(-3px); 
+            box-shadow: 0 4px 10px rgba(0,103,71,0.3); 
+        }
+        .summary-card { 
+            background: linear-gradient(to right, rgba(0,103,71,0.05), rgba(76,175,80,0.05)); 
+            border-radius: 15px; 
+            padding: 25px; 
+            border-left: 5px solid var(--uesd-green); 
+            margin-bottom: 25px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        }
+        .summary-item { 
+            margin-bottom: 15px; 
+            padding: 10px; 
+            border-radius: 8px; 
+            transition: var(--transition); 
+        }
+        .summary-item:hover { 
+            background: rgba(0,103,71,0.05); 
+        }
+        .summary-item strong { 
+            color: var(--uesd-green); 
+            font-size: 1rem; 
+        }
+        .summary-value { 
+            font-size: 1.2rem; 
+            font-weight: 700; 
+            color: var(--uesd-green); 
+        }
+        .table { 
+            border-radius: 10px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+            margin-bottom: 0; 
+        }
+        .table thead { 
+            background: linear-gradient(135deg, var(--uesd-green) 0%, var(--uesd-light-green) 100%); 
+            color: white; 
+        }
+        .table th { 
+            border: none; 
+            padding: 15px; 
+            font-weight: 600; 
+            text-align: center; 
+        }
+        .table td { 
+            border: none; 
+            padding: 12px 15px; 
+            text-align: center; 
+            vertical-align: middle; 
+        }
+        .table tbody tr { 
+            transition: var(--transition); 
+            border-bottom: 1px solid rgba(0,0,0,0.05); 
+        }
+        .table tbody tr:hover { 
+            background: rgba(0,103,71,0.05); 
+            transform: translateX(5px); 
+        }
+        .table tbody tr:nth-child(even) { 
+            background: rgba(0,0,0,0.02); 
+        }
+        .table tbody tr:nth-child(even):hover { 
+            background: rgba(0,103,71,0.08); 
+        }
+        .section-title { 
+            color: var(--uesd-green); 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            padding-bottom: 10px; 
+            border-bottom: 2px solid rgba(0,103,71,0.2); 
+            display: flex; 
+            align-items: center; 
+        }
+        .section-title i { 
+            margin-right: 10px; 
+        }
+        .uesd-badge { 
+            text-align: center; 
+            margin-top: 25px; 
+            padding: 15px; 
+            background: linear-gradient(to right, rgba(0,103,71,0.05), rgba(76,175,80,0.05)); 
+            border-radius: 10px; 
+            border: 1px solid rgba(0,103,71,0.1); 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .uesd-badge::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 3px; 
+            background: linear-gradient(to right, var(--uesd-green), var(--uesd-light-green)); 
+        }
+        .uesd-badge small { 
+            color: var(--uesd-green); 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+        }
+        .no-data { 
+            text-align: center; 
+            padding: 40px; 
+            color: #666; 
+        }
+        .no-data i { 
+            font-size: 3rem; 
+            color: #ccc; 
+            margin-bottom: 15px; 
+        }
+        .date-range-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .date-range-label {
+            font-weight: 600;
+            color: var(--uesd-green);
+            margin-bottom: 8px;
+        }
+        @media (max-width: 768px) { 
+            .report-header { 
+                flex-direction: column; 
+                text-align: center; 
+                gap: 20px; 
+            } 
+            .input-group { 
+                flex-direction: column; 
+            } 
+            .input-group .form-control, 
+            .input-group .btn { 
+                width: 100%; 
+                margin-bottom: 10px; 
+            } 
+            .table-responsive { 
+                border-radius: 10px; 
+                box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+            }
+            .date-range-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        @media print { 
+            body { background: white !important; } 
+            .card { box-shadow: none !important; border: 1px solid #ddd !important; } 
+            .btn { display: none !important; } 
+            .loading-screen { display: none !important; } 
+            .input-group { display: none !important; } 
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading Sales Report</div>
+        <div class="loading-subtext">Please wait while we fetch the report data...</div>
+    </div>
+
+    <div class="container" style="display: none;" id="mainContent">
+        <!-- Header Card -->
+        <div class="card">
+            <div class="card-header text-white">
+                <h4 class="card-title">
+            </i>Form Sales Report
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="report-header">
+                    <div class="d-flex align-items-center">
+                        <div class="school-logo me-3">
+                            <img src="{% static 'serialgenerator/img/uesd-logo.svg' %}" alt="UESD Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="school-logo-fallback" style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: var(--uesd-green); color: white;">
+                                <i class="fas fa-university"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="mb-1" style="color: var(--uesd-green);">Sales Report</h3>
+                            <p class="mb-0 text-muted">UMIS-Pay System | {{ start_date }} to {{ end_date }}</p>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <h4 id="report-date-range" class="mb-2" style="color: var(--uesd-green);">{{ start_date }} to {{ end_date }}</h4>
+                        <div class="input-group">
+                            <div class="date-range-container">
+                                <div>
+                                    <div class="date-range-label">Start Date</div>
+                                    <input type="date" id="start-date-input" class="form-control" value="{{ start_date|date:'Y-m-d' }}">
+                                </div>
+                                <div>
+                                    <div class="date-range-label">End Date</div>
+                                    <input type="date" id="end-date-input" class="form-control" value="{{ end_date|date:'Y-m-d' }}">
+                                </div>
+                                <div class="d-flex align-items-end">
+                                    <button id="load-btn" class="btn btn-primary">
+                                        <i class="fas fa-sync-alt me-2"></i>Load Report
+                                    </button>
+                                    <a id="download-csv" href="?export=csv&start_date={{ start_date|date:'Y-m-d' }}&end_date={{ end_date|date:'Y-m-d' }}" class="btn btn-success ms-2">
+                                        <i class="fas fa-download me-2"></i>Download CSV
+                                    </a>
+                                    <!-- Print Button -->
+                                    <button id="print-btn" class="btn btn-outline-secondary ms-2">
+                                        <i class="fas fa-print me-2"></i>Print Report
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Section -->
+                <div class="summary-card">
+                    <h5 class="section-title"><i class="fas fa-chart-pie me-2"></i>Sales Summary</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="summary-item text-center">
+                                <strong>Total Forms Sold</strong>
+                                <div class="summary-value" id="total-sales">{{ total_sales }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="summary-item text-center">
+                                <strong>Local Students</strong>
+                                <div class="summary-value" id="local-sales">{{ local_sales }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="summary-item text-center">
+                                <strong>International Students</strong>
+                                <div class="summary-value" id="intl-sales">{{ intl_sales }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Breakdown Section -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="section-title"><i class="fas fa-table me-2"></i>Breakdown by Type of Form</h5>
+                        <div id="breakdown-section">
+                            {% if breakdown %}
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Type of Form</th>
+                                            <th>Category</th>
+                                            <th>Count</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in breakdown %}
+                                        <tr>
+                                            <td>{{ item.form_type }}</td>
+                                            <td>
+                                                {% if item.is_international %}
+                                                <span class="badge bg-warning">International</span>
+                                                {% else %}
+                                                <span class="badge bg-info">Local</span>
+                                                {% endif %}
+                                            </td>
+                                            <td><strong>{{ item.total }}</strong></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% else %}
+                            <div class="no-data">
+                                <i class="fas fa-inbox"></i>
+                                <p>No forms sold for this date range.</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Sales Section -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="section-title"><i class="fas fa-list-alt me-2"></i>Detailed Sales</h5>
+                        <div id="details-section">
+                            {% if detailed_sales %}
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Buyer Name</th>
+                                            <th>Form Type</th>
+                                            <th>Category</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for sale in detailed_sales %}
+                                        <tr>
+                                            <td><strong>{{ sale.first_name }}</strong></td>
+                                            <td>{{ sale.form_type }}</td>
+                                            <td>
+                                                {% if sale.is_international %}
+                                                <span class="badge bg-warning">International</span>
+                                                {% else %}
+                                                <span class="badge bg-info">Local</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ sale.created_at|date:"M d, Y" }}</td>
+                                            <td>{{ sale.created_at|time:"H:i:s" }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% else %}
+                            <div class="no-data">
+                                <i class="fas fa-inbox"></i>
+                                <p>No sales found for this date range.</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="uesd-badge">
+                    <small><i class="fas fa-shield-alt me-2"></i>Official Report - University of Environment and Sustainable Development</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const loadingScreen = document.getElementById('loadingScreen');
+                const mainContent = document.getElementById('mainContent');
+                
+                loadingScreen.classList.add('fade-out');
+                
+                setTimeout(function() {
+                    loadingScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                }, 500); 
+                
+            }, 1500); 
+        });
+
+        function loadReport(startDate, endDate) {
+            // Show loading state
+            $('#load-btn').html('<i class="fas fa-spinner fa-spin me-2"></i>Loading...').prop('disabled', true);
+            
+            // Validate date range
+            if (startDate > endDate) {
+                alert('Start date cannot be after end date.');
+                $('#load-btn').html('<i class="fas fa-sync-alt me-2"></i>Load Report').prop('disabled', false);
+                return;
+            }
+            
+            $.getJSON(`/bankreports/api/daily-report?start_date=${startDate}&end_date=${endDate}`, function(data) {
+                $("#report-date-range").text(data.date_range);
+                $("#total-sales").text(data.summary.total_sales);
+                $("#local-sales").text(data.summary.local_sales);
+                $("#intl-sales").text(data.summary.international_sales);
+
+                // Breakdown
+                let breakdownHTML = "";
+                if (data.breakdown.length > 0) {
+                    breakdownHTML += `<div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr><th>Form Type</th><th>Category</th><th>Count</th></tr>
+                            </thead>
+                            <tbody>`;
+                    data.breakdown.forEach(item => {
+                        const categoryBadge = item.is_international ? 
+                            '<span class="badge bg-warning">International</span>' : 
+                            '<span class="badge bg-info">Local</span>';
+                        breakdownHTML += `<tr>
+                            <td>${item.form_type}</td>
+                            <td>${categoryBadge}</td>
+                            <td><strong>${item.total}</strong></td>
+                        </tr>`;
+                    });
+                    breakdownHTML += "</tbody></table></div>";
+                } else {
+                    breakdownHTML = `<div class="no-data">
+                        <i class="fas fa-inbox"></i>
+                        <p>No forms sold for this date range.</p>
+                    </div>`;
+                }
+                $("#breakdown-section").html(breakdownHTML);
+
+                // Detailed
+                let detailsHTML = "";
+                if (data.details.length > 0) {
+                    detailsHTML += `<div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr><th>Buyer Name</th><th>Form Type</th><th>Category</th><th>Date</th><th>Time</th></tr>
+                            </thead>
+                            <tbody>`;
+                    data.details.forEach(sale => {
+                        const date = new Date(sale.created_at).toLocaleDateString();
+                        const time = new Date(sale.created_at).toLocaleTimeString();
+                        const categoryBadge = sale.is_international ? 
+                            '<span class="badge bg-warning">International</span>' : 
+                            '<span class="badge bg-info">Local</span>';
+                        detailsHTML += `<tr>
+                            <td><strong>${sale.buyer_name}</strong></td>
+                            <td>${sale.form_type}</td>
+                            <td>${categoryBadge}</td>
+                            <td>${date}</td>
+                            <td>${time}</td>
+                        </tr>`;
+                    });
+                    detailsHTML += "</tbody></table></div>";
+                } else {
+                    detailsHTML = `<div class="no-data">
+                        <i class="fas fa-inbox"></i>
+                        <p>No detailed sales for this date range.</p>
+                    </div>`;
+                }
+                $("#details-section").html(detailsHTML);
+
+                // Update CSV link
+                $("#download-csv").attr("href", `/bankreports/export-csv?start_date=${startDate}&end_date=${endDate}`);
+                
+                // Reset button state
+                $('#load-btn').html('<i class="fas fa-sync-alt me-2"></i>Load Report').prop('disabled', false);
+            }).fail(function() {
+                alert('Error loading report data. Please try again.');
+                $('#load-btn').html('<i class="fas fa-sync-alt me-2"></i>Load Report').prop('disabled', false);
+            });
+        }
+
+        // Print Report Function
+        function printReport() {
+            // Create a print-friendly version of the report
+            const printContent = document.createElement('div');
+            printContent.innerHTML = `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #006747; padding-bottom: 20px;">
+                        <h1 style="color: #006747; margin-bottom: 5px;">University of Environment and Sustainable Development</h1>
+                        <h2 style="color: #006747; margin-bottom: 10px;">Sales Report</h2>
+                        <p style="color: #666; font-size: 16px;">UMIS-Pay System | ${$("#report-date-range").text()}</p>
+                        <p style="color: #666; font-size: 14px;">Generated on: ${new Date().toLocaleDateString()}</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 30px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                        <h3 style="color: #006747; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Sales Summary</h3>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="text-align: center;">
+                                <p style="font-weight: bold; margin-bottom: 5px;">Total Forms Sold</p>
+                                <p style="font-size: 24px; color: #006747; font-weight: bold;">${$("#total-sales").text()}</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <p style="font-weight: bold; margin-bottom: 5px;">Local Students</p>
+                                <p style="font-size: 24px; color: #006747; font-weight: bold;">${$("#local-sales").text()}</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <p style="font-weight: bold; margin-bottom: 5px;">International Students</p>
+                                <p style="font-size: 24px; color: #006747; font-weight: bold;">${$("#intl-sales").text()}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="color: #006747; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Breakdown by Type of Form</h3>
+                        ${$("#breakdown-section").html()}
+                    </div>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="color: #006747; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Detailed Sales</h3>
+                        ${$("#details-section").html()}
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px;">
+                        <p>Official Report - University of Environment and Sustainable Development</p>
+                    </div>
+                </div>
+            `;
+            
+            // Create a new window for printing
+            const printWindow = window.open('', '_blank', 'width=800,height=600');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Sales Report - UMIS-Pay | UESD</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        th { background-color: #006747; color: white; }
+                        tr:nth-child(even) { background-color: #f2f2f2; }
+                        .no-data { text-align: center; padding: 40px; color: #666; }
+                        @media print {
+                            body { margin: 0; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${printContent.innerHTML}
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            
+            printWindow.onload = function() {
+                printWindow.focus();
+                printWindow.print();
+            };
+        }
+
+        $(document).ready(function() {
+            const startDate = $("#start-date-input").val();
+            const endDate = $("#end-date-input").val();
+            
+            $("#load-btn").click(() => {
+                const startDate = $("#start-date-input").val();
+                const endDate = $("#end-date-input").val();
+                loadReport(startDate, endDate);
+            });
+            
+            $("#print-btn").click(printReport);
+            
+            loadReport(startDate, endDate);
+        });
+    </script>
+</body>
+</html>

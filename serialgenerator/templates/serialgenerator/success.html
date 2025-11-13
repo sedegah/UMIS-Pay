@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success - UMIS-Pay | UESD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fixed favicon implementation using Django static -->
+    <link rel="icon" href="{% static 'serialgenerator/favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'serialgenerator/favicon.ico' %}" type="image/x-icon">
+    
+    <style>
+        :root { 
+            --uesd-green: #006747; 
+            --uesd-light-green: #4CAF50; 
+            --uesd-gold: #FFD700; 
+            --background-light: #f8f9fa; 
+            --text-dark: #333333; 
+            --text-light: #ffffff; 
+            --card-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--uesd-green) 0%, var(--uesd-light-green) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(255,255,255,0.3);
+            border-top: 6px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        .loading-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .loading-subtext {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .fade-out {
+            animation: fadeOut 0.5s ease-in-out forwards;
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        
+        body { 
+            background: linear-gradient(135deg, var(--uesd-green) 0%, var(--uesd-light-green) 100%); 
+            min-height: 100vh; 
+            font-family: 'Poppins', sans-serif; 
+            padding: 15px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0; 
+        }
+        .container { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 0; }
+        .card { border: none; border-radius: 20px; box-shadow: var(--card-shadow); max-width: 750px; width: 100%; margin: 0 auto; overflow: hidden; transition: var(--transition); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .card-header { background: linear-gradient(135deg, var(--uesd-green) 0%, var(--uesd-light-green) 100%); border-radius: 20px 20px 0 0 !important; padding: 25px; border: none; position: relative; overflow: hidden; }
+        .card-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--uesd-gold); }
+        .card-header::after { content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%; background: rgba(255,255,255,0.1); transform: rotate(30deg); }
+        .card-title { font-weight: 700; color: white; margin-bottom: 0; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+        .card-body { padding: 30px; background: #fff; }
+        .success-icon { text-align: center; margin-bottom: 20px; position: relative; }
+        .success-icon::before { content: ''; position: absolute; width: 80px; height: 80px; background: rgba(0,103,71,0.1); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; }
+        .school-logo { width: 90px; height: 90px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); border: 3px solid var(--uesd-green); overflow: hidden; background: white; position: relative; z-index: 1; transition: var(--transition); }
+        .school-logo:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .school-logo img { width: 100%; height: 100%; object-fit: cover; }
+        .alert-info { border-radius: 12px; border: none; background: linear-gradient(to right, rgba(0,103,71,0.05), rgba(76,175,80,0.05)); color: var(--uesd-green); padding: 20px; border-left: 5px solid var(--uesd-green); margin-bottom: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .alert-info h6 { font-weight: 700; margin-bottom: 15px; color: var(--uesd-green); font-size: 1.1rem; text-align: center; display: flex; align-items: center; justify-content: center; }
+        .credentials { display: flex; gap: 20px; margin-top: 15px; }
+        .credential-item { flex: 1; }
+        .credential-label { font-weight: 600; margin-bottom: 8px; color: var(--uesd-green); font-size: 0.9rem; text-align: center; }
+        code { background: linear-gradient(to right, rgba(0,103,71,0.1), rgba(76,175,80,0.1)); color: var(--uesd-green); padding: 10px 15px; border-radius: 8px; font-weight: 700; font-size: 1.1rem; display: block; text-align: center; border: 1px dashed rgba(0,103,71,0.3); transition: var(--transition); letter-spacing: 1px; }
+        code:hover { background: rgba(0,103,71,0.15); transform: translateY(-2px); }
+        .student-details { margin-top: 25px; background: rgba(0,103,71,0.02); border-radius: 12px; padding: 20px; border: 1px solid rgba(0,103,71,0.05); }
+        .student-details h6 { font-weight: 700; color: var(--uesd-green); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid rgba(0,103,71,0.2); font-size: 1.1rem; text-align: center; display: flex; align-items: center; justify-content: center; }
+        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .detail-item { margin-bottom: 12px; text-align: center; padding: 8px; border-radius: 8px; transition: var(--transition); }
+        .detail-item:hover { background: rgba(0,103,71,0.05); }
+        .detail-item strong { color: var(--uesd-green); font-size: 0.95rem; display: block; margin-bottom: 3px; }
+        .detail-item span { font-size: 0.95rem; color: #555; }
+        .btn-primary { background: linear-gradient(135deg, var(--uesd-green) 0%, var(--uesd-light-green) 100%); border: none; border-radius: 10px; padding: 12px 20px; font-weight: 600; transition: var(--transition); font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,103,71,0.3); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,103,71,0.4); }
+        .btn-success { background: linear-gradient(135deg, var(--uesd-light-green) 0%, #2E8B57 100%); border: none; border-radius: 10px; padding: 12px 20px; font-weight: 600; transition: var(--transition); font-size: 0.95rem; box-shadow: 0 4px 10px rgba(76,175,80,0.3); }
+        .btn-success:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(76,175,80,0.4); }
+        .btn-outline-secondary { border: 2px solid var(--uesd-green); color: var(--uesd-green); border-radius: 10px; padding: 12px 20px; font-weight: 600; transition: var(--transition); font-size: 0.95rem; background: white; }
+        .btn-outline-secondary:hover { background-color: var(--uesd-green); color: white; transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,103,71,0.3); }
+        .button-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 25px; }
+        .uesd-badge { text-align: center; margin-top: 25px; padding: 15px; background: linear-gradient(to right, rgba(0,103,71,0.05), rgba(76,175,80,0.05)); border-radius: 10px; border: 1px solid rgba(0,103,71,0.1); position: relative; overflow: hidden; }
+        .uesd-badge::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(to right, var(--uesd-green), var(--uesd-light-green)); }
+        .uesd-badge small { color: var(--uesd-green); font-weight: 600; font-size: 0.9rem; }
+        .international-badge { display: inline-block; background: linear-gradient(135deg, #FF9800 0%, #FF5722 100%); color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-left: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .success-icon .fa-check-circle { color: var(--uesd-light-green); animation: pulse 2s infinite; }
+        @media (max-width: 576px) { .credentials { flex-direction: column; gap: 15px; } .details-grid { grid-template-columns: 1fr; } .button-group { flex-direction: column; } .btn-primary, .btn-success, .btn-outline-secondary { width: 100%; } }
+        @media print { 
+            body { background: white !important; } 
+            .card { box-shadow: none !important; border: 1px solid #ddd !important; } 
+            .btn { display: none !important; } 
+            .loading-screen { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Generating Your Serial Number</div>
+        <div class="loading-subtext">Please wait while we process your information...</div>
+    </div>
+
+    <div class="container" style="display: none;" id="mainContent">
+        <div class="row justify-content-center w-100">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header text-white">
+                        <h4 class="card-title">
+                            <i class="fas fa-check-circle me-2"></i>Serial Generated Successfully!
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="success-icon">
+                            <div class="school-logo">
+                                <img src="{% static 'serialgenerator/img/uesd-logo.svg' %}" alt="UESD Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="school-logo-fallback" style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: var(--uesd-green); color: white;">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                            </div>
+                            <h5 class="text-success mt-2 mb-1">Success! 
+                                {% if is_international %}
+                                <span class="international-badge">International Student</span>
+                                {% endif %}
+                            </h5>
+                            <p class="text-muted mb-0">{{ university }}</p>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <h6></i>Student Credentials</h6>
+                            <div class="credentials">
+                                <div class="credential-item">
+                                    <div class="credential-label">Serial Number</div>
+                                    <code>{{ serial_number }}</code>
+                                </div>
+                                <div class="credential-item">
+                                    <div class="credential-label">PIN</div>
+                                    <code>{{ pin }}</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-details">
+                            <h6><i class="fas fa-user-graduate me-2"></i>Student Details</h6>
+                            <div class="details-grid">
+                                <div class="detail-item"><strong>Full Name:</strong> <span>{{ first_name }} {% if middle_name %}{{ middle_name }} {% endif %}{{ last_name }}</span></div>
+                                <div class="detail-item"><strong>First Name:</strong> <span>{{ first_name }}</span></div>
+                                {% if middle_name %}
+                                <div class="detail-item"><strong>Middle Name:</strong> <span>{{ middle_name }}</span></div>
+                                {% endif %}
+                                <div class="detail-item"><strong>Last Name:</strong> <span>{{ last_name }}</span></div>
+                                <div class="detail-item"><strong>Date of Birth:</strong> <span>{{ date_of_birth }}</span></div>
+                                <div class="detail-item"><strong>Form Type:</strong> <span>{{ form_type }}</span></div>
+                                <div class="detail-item"><strong>Nationality:</strong> <span>{{ nationality|default:"Ghana" }}</span></div>
+                                <div class="detail-item"><strong>Phone Number:</strong> <span>{{ phone_number|default:"N/A" }}</span></div>
+                                <div class="detail-item"><strong>ID Number:</strong> <span>{{ id_number|default:"N/A" }}</span></div>
+                                {% if is_international %}
+                                <div class="detail-item"><strong>Student Type:</strong> <span class="text-warning fw-bold">International Student</span></div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning mt-4">
+                            <h6 class="mb-3"><i class="fas fa-exclamation-triangle me-2"></i>Important Instructions</h6>
+                            <ul class="mb-0 ps-3">
+                                <li>Keep your Serial Number and PIN secure and confidential</li>
+                                <li>Use these credentials to log in to the UMIS-Pay portal</li>
+                                <li>You will need to complete your payment within 7 days</li>
+                                {% if is_international %}
+                                <li>International students must provide passport and visa documents during registration</li>
+                                {% endif %}
+                                <li>Contact the admissions office if you encounter any issues</li>
+                            </ul>
+                        </div>
+
+                        <div class="uesd-badge">
+                            <small>Official Document - {{ university }}</small>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="button-group">
+                                <button onclick="window.print()" class="btn btn-primary">
+                                    <i class="fas fa-print me-2"></i>Print Receipt
+                                </button>
+                                <a href="{% url 'generate_serial' %}" class="btn btn-success">
+                                    </i>Generate Another
+                                </a>
+                                <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-home me-2"></i>Back to Home
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const loadingScreen = document.getElementById('loadingScreen');
+                const mainContent = document.getElementById('mainContent');
+                
+                loadingScreen.classList.add('fade-out');
+                
+                setTimeout(function() {
+                    loadingScreen.style.display = 'none';
+                    mainContent.style.display = 'flex';
+                }, 500); 
+                
+            }, 2000); 
+        });
+    </script>
+</body>
+</html>

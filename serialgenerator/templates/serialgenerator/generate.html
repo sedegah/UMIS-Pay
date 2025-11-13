@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Serial - UMIS-Pay | UESD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
+    <style>
+        :root {
+            --uesd-green: #006747;
+            --uesd-light-green: #4CAF50;
+            --uesd-gold: #FFD700;
+            --background-light: #f8f9fa;
+            --text-dark: #333333;
+            --text-light: #ffffff;
+            --card-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: linear-gradient(135deg, var(--uesd-green) 0%, var(--uesd-light-green) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            padding: 15px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card {
+            border: none; 
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            max-width: 750px; 
+            width: 100%; 
+            margin: 0 auto;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--uesd-green) 0%, var(--uesd-light-green) 100%);
+            border-radius: 20px 20px 0 0 !important;
+            padding: 25px; 
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--uesd-gold);
+        }
+        
+        .card-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(30deg);
+        }
+        
+        .card-title { 
+            font-weight: 700; 
+            color: white; 
+            margin-bottom: 5px; 
+            font-size: 1.5rem; 
+            text-align: center; 
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-header small { 
+            color: rgba(255,255,255,0.9); 
+            font-size: 0.9rem; 
+            text-align: center; 
+            display: block; 
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-body { 
+            padding: 30px; 
+            background: #fff;
+        }
+        
+        .form-label { 
+            font-weight: 600; 
+            color: var(--uesd-green); 
+            margin-bottom: 8px; 
+            font-size: 0.95rem; 
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-label::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--uesd-green);
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 10px; 
+            padding: 12px 15px;
+            border: 2px solid #e9ecef; 
+            transition: var(--transition);
+            font-size: 0.95rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--uesd-green);
+            box-shadow: 0 0 0 0.2rem rgba(0, 103, 71, 0.15), inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--uesd-green) 0%, var(--uesd-light-green) 100%);
+            border: none; 
+            border-radius: 10px;
+            padding: 14px; 
+            font-weight: 600;
+            transition: var(--transition); 
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0,103,71,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 20px rgba(0,103,71,0.4); 
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.7s;
+        }
+        
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+        
+        .btn-outline-secondary {
+            border: 2px solid var(--uesd-green); 
+            color: var(--uesd-green);
+            border-radius: 10px; 
+            font-weight: 600; 
+            transition: var(--transition);
+            font-size: 0.95rem; 
+            padding: 12px 20px;
+            background: white;
+        }
+        
+        .btn-outline-secondary:hover { 
+            background-color: var(--uesd-green); 
+            color: white; 
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,103,71,0.3);
+        }
+        
+        .alert-danger {
+            border-radius: 10px; 
+            border: none;
+            background: linear-gradient(to right, rgba(220,53,69,0.1), rgba(220,53,69,0.05));
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+            padding: 15px; 
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        .form-section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,103,71,0.1);
+        }
+        
+        .form-section:last-of-type {
+            border-bottom: none;
+        }
+        
+        .form-section-title {
+            font-weight: 600;
+            color: var(--uesd-green);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-section-title i {
+            margin-right: 10px;
+            background: rgba(0,103,71,0.1);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Improved Date selector styles */
+        .date-selector {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        
+        .date-field {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .date-selector-label {
+            font-size: 0.85rem;
+            color: var(--uesd-green);
+            margin-bottom: 8px;
+            text-align: center;
+            font-weight: 600;
+            display: block;
+        }
+        
+        .date-field .form-select {
+            width: 100%;
+            text-align: center;
+        }
+        
+        /* Make month selector wider since it has longer text */
+        .date-field.month-field {
+            flex: 1.5;
+        }
+        
+        /* Phone input styling */
+        .iti {
+            width: 100%;
+        }
+        
+        .iti__flag-container {
+            border-radius: 10px 0 0 10px;
+            overflow: hidden;
+        }
+        
+        .phone-input-container {
+            display: flex;
+        }
+        
+        .phone-input-container .form-control {
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+        }
+        
+        /* Custom checkbox styling */
+        .form-check {
+            margin-bottom: 15px;
+        }
+        
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            margin-top: 0.2rem;
+            margin-right: 10px;
+            border: 2px solid var(--uesd-green);
+            position: relative;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--uesd-green);
+            border-color: var(--uesd-green);
+        }
+        
+        .form-check-input:focus {
+            border-color: var(--uesd-green);
+            box-shadow: 0 0 0 0.2rem rgba(0, 103, 71, 0.25);
+        }
+        
+        .form-check-label {
+            font-weight: 500;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .international-info {
+            background-color: rgba(0, 103, 71, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+            border-left: 4px solid var(--uesd-green);
+            transition: var(--transition);
+        }
+        
+        @media (max-width: 768px) {
+            .card-body { padding: 20px; }
+            .btn-primary, .btn-outline-secondary { padding: 12px; font-size: 0.9rem; }
+            .date-selector {
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .card-header {
+                padding: 20px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+            
+            .form-section-title {
+                font-size: 1rem;
+            }
+            
+            .date-selector {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .date-field.month-field {
+                flex: 1;
+            }
+        }
+        
+        /* Animation for form focus */
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .form-group.focused .form-label {
+            color: var(--uesd-light-green);
+        }
+        
+        .form-group.focused .form-label::before {
+            background: var(--uesd-light-green);
+            transform: scale(1.2);
+        }
+        
+        /* Loading animation for submit button */
+        .btn-loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 2px solid transparent;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: button-loading-spinner 1s ease infinite;
+        }
+        
+        @keyframes button-loading-spinner {
+            from { transform: rotate(0turn); }
+            to { transform: rotate(1turn); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="card">
+                    <div class="card-header text-white">
+                        <h4 class="card-title mb-1">
+                            <i class="fas fa-key me-2"></i>Generate Serial & PIN
+                        </h4>
+                        <small>University of Environment and Sustainable Development</small>
+                    </div>
+                    <div class="card-body">
+                        <div id="ajax-error-container"></div>
+
+                        <form id="serialForm" method="post">
+                            {% csrf_token %}
+                            
+                            <div class="form-section">
+                                <h5 class="form-section-title">
+                                    <i class="fas fa-user"></i>Personal Information
+                                </h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">First Name *</label>
+                                            <input type="text" name="first_name" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Middle Name</label>
+                                            <input type="text" name="middle_name" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Last Name *</label>
+                                            <input type="text" name="last_name" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Date of Birth *</label>
+                                            <div class="date-selector">
+                                                <div class="date-field">
+                                                    <span class="date-selector-label">Day</span>
+                                                    <select name="birth_day" class="form-select" required>
+                                                        <option value="" disabled selected>Day</option>
+                                                        <!-- Days 1-31 will be populated by JavaScript -->
+                                                    </select>
+                                                </div>
+                                                <div class="date-field month-field">
+                                                    <span class="date-selector-label">Month</span>
+                                                    <select name="birth_month" class="form-select" required>
+                                                        <option value="" disabled selected>Month</option>
+                                                        <option value="1">January</option>
+                                                        <option value="2">February</option>
+                                                        <option value="3">March</option>
+                                                        <option value="4">April</option>
+                                                        <option value="5">May</option>
+                                                        <option value="6">June</option>
+                                                        <option value="7">July</option>
+                                                        <option value="8">August</option>
+                                                        <option value="9">September</option>
+                                                        <option value="10">October</option>
+                                                        <option value="11">November</option>
+                                                        <option value="12">December</option>
+                                                    </select>
+                                                </div>
+                                                <div class="date-field">
+                                                    <span class="date-selector-label">Year</span>
+                                                    <select name="birth_year" class="form-select" required>
+                                                        <option value="" disabled selected>Year</option>
+                                                        <!-- Years will be populated by JavaScript -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="date_of_birth" id="date_of_birth">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Form Type *</label>
+                                            <select name="form_type" class="form-select" required>
+                                                <option value="" disabled selected>Select form type</option>
+                                                <option value="BSc">Bachelors (BSc)</option>
+                                                <option value="MSc">Masters (MSc)</option>
+                                                <option value="PhD">PhD (PhD)</option>
+                                                <option value="Diploma">Diploma</option>
+                                                <option value="Mature">Mature</option>
+                                                <option value="Sandwich">Sandwich</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="international_student" name="international_student">
+                                    <label class="form-check-label" for="international_student">
+                                        <i class="fas fa-globe-americas me-2"></i>I am an international student
+                                    </label>
+                                </div>
+                                
+                                <div id="international-info" class="international-info" style="display: none;">
+                                    <p class="mb-2"><strong>International Student Information</strong></p>
+                                    <p class="small mb-0">As an international student, please ensure you have your passport details and visa information ready for verification.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h5 class="form-section-title">
+                                    <i class="fas fa-id-card"></i>Contact & Identification
+                                </h5>
+
+                                <div class="form-group">
+                                    <label class="form-label">Nationality *</label>
+                                    <select name="nationality" class="form-select" required>
+                                        <option value="" disabled selected>Select your nationality</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number *</label>
+                                    <input type="tel" name="phone_number" id="phone" class="form-control" required>
+                                    <input type="hidden" name="phone_full" id="phone-full">
+                                    <input type="hidden" name="country_code" id="country-code">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Ghana Card Number *</label>
+                                    <div id="id-number-container">
+                                        <input type="text" name="ghana_card_number" class="form-control" placeholder="GHA-123456789-1" required>
+                                    </div>
+                                    <small class="form-text text-muted" id="id-hint">Enter your Ghana Card number</small>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 mb-3" id="submit-button">
+                                <i class="fas fa-key me-2"></i>Generate Serial & PIN
+                            </button>
+                        </form>
+
+                        <div class="text-center">
+                            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+
+    <script>
+        const form = document.getElementById('serialForm');
+        const errorContainer = document.getElementById('ajax-error-container');
+        const submitButton = document.getElementById('submit-button');
+        const dateOfBirthField = document.getElementById('date_of_birth');
+        const phoneInput = document.querySelector("#phone");
+        const phoneFullInput = document.querySelector("#phone-full");
+        const countryCodeInput = document.querySelector("#country-code");
+        const internationalCheckbox = document.getElementById('international_student');
+        const internationalInfo = document.getElementById('international-info');
+        const idNumberContainer = document.getElementById('id-number-container');
+        const idHint = document.getElementById('id-hint');
+
+        const iti = window.intlTelInput(phoneInput, {
+            initialCountry: "gh",
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js",
+        });
+
+        phoneInput.addEventListener('countrychange', function() {
+            const countryData = iti.getSelectedCountryData();
+            countryCodeInput.value = countryData.iso2;
+        });
+
+        internationalCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                internationalInfo.style.display = 'block';
+                idNumberContainer.innerHTML = `
+                    <input type="text" name="ghana_card_number" class="form-control" placeholder="Passport Number" required>
+                `;
+                idHint.textContent = "Enter your passport number";
+            } else {
+                internationalInfo.style.display = 'none';
+                idNumberContainer.innerHTML = `
+                    <input type="text" name="ghana_card_number" class="form-control" placeholder="GHA-123456789-1" required>
+                `;
+                idHint.textContent = "Enter your Ghana Card number";
+            }
+        });
+
+        const daySelect = document.querySelector('select[name="birth_day"]');
+        for (let i = 1; i <= 31; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            daySelect.appendChild(option);
+        }
+
+        const yearSelect = document.querySelector('select[name="birth_year"]');
+        const currentYear = new Date().getFullYear();
+        for (let i = currentYear; i >= 1950; i--) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            yearSelect.appendChild(option);
+        }
+
+        const countrySelect = document.querySelector('select[name="nationality"]');
+        const countries = [
+            "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", 
+            "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", 
+            "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", 
+            "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", 
+            "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", 
+            "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", 
+            "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", 
+            "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", 
+            "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", 
+            "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kosovo", 
+            "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", 
+            "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", 
+            "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", 
+            "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", 
+            "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", 
+            "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", 
+            "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", 
+            "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", 
+            "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", 
+            "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", 
+            "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", 
+            "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+        ];
+        
+        countries.forEach(country => {
+            const option = document.createElement('option');
+            option.value = country;
+            option.textContent = country;
+            if (country === "Ghana") {
+                option.selected = true;
+            }
+            countrySelect.appendChild(option);
+        });
+
+        function updateDateOfBirth() {
+            const day = document.querySelector('select[name="birth_day"]').value;
+            const month = document.querySelector('select[name="birth_month"]').value;
+            const year = document.querySelector('select[name="birth_year"]').value;
+            
+            if (day && month && year) {
+                const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                dateOfBirthField.value = formattedDate;
+            } else {
+                dateOfBirthField.value = '';
+            }
+        }
+
+        document.querySelectorAll('select[name="birth_day"], select[name="birth_month"], select[name="birth_year"]').forEach(select => {
+            select.addEventListener('change', updateDateOfBirth);
+        });
+
+        document.querySelectorAll('.form-control, .form-select').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.closest('.form-group').classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                if (this.value === '' || (this.tagName === 'SELECT' && this.selectedIndex === 0)) {
+                    this.closest('.form-group').classList.remove('focused');
+                }
+            });
+        });
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            errorContainer.innerHTML = '';
+            
+            if (!dateOfBirthField.value) {
+                errorContainer.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Please select a valid date of birth
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+                return;
+            }
+            
+            if (!iti.isValidNumber()) {
+                errorContainer.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Please enter a valid phone number
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+                return;
+            }
+            
+            phoneFullInput.value = iti.getNumber();
+            const countryData = iti.getSelectedCountryData();
+            countryCodeInput.value = countryData.iso2;
+
+            submitButton.classList.add('btn-loading');
+            submitButton.disabled = true;
+
+            const formData = new FormData(form);
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            try {
+                const response = await fetch("{% url 'generate_serial' %}", {
+                    method: 'POST',
+                    headers: { 'X-CSRFToken': csrfToken },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (data.redirect_url) {
+                        window.location.href = data.redirect_url;
+                    }
+                } else {
+                    let message = 'An unexpected error occurred.';
+                    
+                    if (data.error) {
+                        if (data.error.includes('Ghana Card') || data.error.includes('already exists') || data.error.includes('ID')) {
+                            message = 'A serial already exists for this ID number.';
+                        } else {
+                            message = data.error;
+                        }
+                    }
+
+                    errorContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
+                }
+            } catch (err) {
+                errorContainer.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Unable to process request. Please try again.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+            } finally {
+                submitButton.classList.remove('btn-loading');
+                submitButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
