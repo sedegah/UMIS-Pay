@@ -72,3 +72,4 @@
 // Enhance admin filtering – 2026-01-04 19:20:23
 // Improve serial encryption handling – 2026-01-04 17:18:59
 // Improve payment validation – 2026-01-04 21:44:03
+// Refactor bank report aggregation logic – 2026-01-04 8:51:59
