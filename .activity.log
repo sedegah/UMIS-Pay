@@ -231,3 +231,4 @@
 // Improve DB migrations – 2026-01-11 21:37:00
 // Enhance admin filtering – 2026-01-11 20:04:10
 // Refactor serial lifecycle management – 1768141098
+// Refactor bank report aggregation logic – 1768141098
