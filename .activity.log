@@ -244,3 +244,4 @@
 // Add safeguards for duplicate serials – 1768141098
 // Refactor core service utilities – 1768227918
 // Improve database migration safety – 1768227918
+// Improve payment validation checks – 1768227918
