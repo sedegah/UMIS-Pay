@@ -252,3 +252,4 @@
 // Improve serial encryption handling – 1768227918
 // Improve payment validation checks – 1768227918
 // Improve .env configuration validation – 1768227918
+// Add safeguards for duplicate serials – 1768227918
