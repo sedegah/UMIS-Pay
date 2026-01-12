@@ -251,3 +251,4 @@
 // Improve database migration safety – 1768227918
 // Improve serial encryption handling – 1768227918
 // Improve payment validation checks – 1768227918
+// Improve .env configuration validation – 1768227918
