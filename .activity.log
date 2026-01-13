@@ -256,3 +256,4 @@
 // Enhance admin panel filtering – 1768227918
 // Refactor serial lifecycle management – 1768314292
 // Add audit logging for reports – 1768314292
+// Add safeguards for duplicate serials – 1768314292
