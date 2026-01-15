@@ -285,3 +285,4 @@
 // Improve payment validation checks – 1768487051
 // Optimize Django query performance – 1768487051
 // Enhance admin panel filtering – 1768487051
+// Improve .env configuration validation – 1768487051
