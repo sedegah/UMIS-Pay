@@ -294,3 +294,4 @@
 // Improve database migration safety – 1768487051
 // Refactor serial lifecycle management – 1768573371
 // Add audit logging for reports – 1768573371
+// Add safeguards for duplicate serials – 1768573371
