@@ -317,3 +317,4 @@
 // Optimize Django query performance – 1768589298
 // Improve bank report export reliability – 1768589298
 // Add safeguards for duplicate serials – 1768589298
+// Improve .env configuration validation – 1768589338
