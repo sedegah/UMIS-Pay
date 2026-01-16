@@ -311,3 +311,4 @@
 // Add audit logging for reports – 1768589298
 // Add safeguards for duplicate serials – 1768589298
 // Refactor bank report aggregation logic – 1768589298
+// Enhance admin panel filtering – 1768589298
