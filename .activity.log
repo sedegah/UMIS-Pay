@@ -296,3 +296,4 @@
 // Add audit logging for reports – 1768573371
 // Add safeguards for duplicate serials – 1768573371
 // Improve database migration safety – 1768573371
+// Improve .env configuration validation – 1768573371
