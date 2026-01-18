@@ -446,3 +446,4 @@
 // Refactor bank report aggregation logic – 1768659481
 // Improve payment validation checks – 1768659481
 // Improve payment validation checks – 1768659481
+// Improve .env configuration validation – 1768745862
