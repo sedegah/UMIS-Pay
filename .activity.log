@@ -487,3 +487,4 @@
 // Optimize Django query performance – 1768942249
 // Enhance admin panel filtering – 1768942249
 // Improve database migration safety – 1768942249
+// Add safeguards for duplicate serials – 1768942249
