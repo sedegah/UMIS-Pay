@@ -500,3 +500,4 @@
 // Improve .env configuration validation – 1769005802
 // Improve payment validation checks – 1769005802
 // Improve database migration safety – 1769005802
+// Add audit logging for reports – 1769005802
