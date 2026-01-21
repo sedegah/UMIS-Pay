@@ -505,3 +505,4 @@
 // Improve .env configuration validation – 1769005802
 // Enhance admin panel filtering – 1769005802
 // Improve .env configuration validation – 1769005802
+// Add safeguards for duplicate serials – 1769005802
