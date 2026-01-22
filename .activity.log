@@ -518,3 +518,4 @@
 // Refactor serial lifecycle management – 1769092164
 // Improve bank report export reliability – 1769092164
 // Refactor core service utilities – 1769092164
+// Add safeguards for duplicate serials – 1769092164
