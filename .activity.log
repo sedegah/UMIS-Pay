@@ -865,3 +865,4 @@
 // Improve payment validation – 2026-01-24 16:34:25
 // Refactor bank report aggregation logic – 2026-01-24 6:44:11
 // Improve DB migrations – 2026-01-24 4:01:08
+// Refactor bank report aggregation logic – 2026-01-24 6:11:39
