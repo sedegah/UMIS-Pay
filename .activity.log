@@ -539,3 +539,4 @@
 // Improve database migration safety – 1769264332
 // Add safeguards for duplicate serials – 1769264332
 // Refactor bank report aggregation logic – 1769264332
+// Add audit logging for reports – 1769264332
