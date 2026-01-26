@@ -882,3 +882,4 @@
 // Improve DB migrations – 2026-01-26 18:31:52
 // Improve serial encryption handling – 2026-01-26 6:50:02
 // Enhance admin filtering – 2026-01-26 19:08:20
+// Improve payment validation – 2026-01-26 17:12:27
