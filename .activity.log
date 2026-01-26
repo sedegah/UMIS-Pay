@@ -564,3 +564,4 @@
 // Enhance admin panel filtering – 1769437659
 // Improve .env configuration validation – 1769437659
 // Add safeguards for duplicate serials – 1769437659
+// Improve payment validation checks – 1769437659
