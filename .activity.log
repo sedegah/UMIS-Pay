@@ -560,3 +560,4 @@
 // Refactor bank report aggregation logic – 1769437659
 // Optimize Django query performance – 1769437659
 // Optimize Django query performance – 1769437659
+// Improve .env configuration validation – 1769437659
