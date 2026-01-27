@@ -575,3 +575,4 @@
 // Improve bank report export reliability – 1769524155
 // Refactor serial lifecycle management – 1769524155
 // Improve serial encryption handling – 1769524155
+// Improve .env configuration validation – 1769524155
