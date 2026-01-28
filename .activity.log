@@ -583,3 +583,4 @@
 // Improve database migration safety – 1769524155
 // Improve bank report export reliability – 1769524155
 // Optimize Django query performance – 1769610571
+// Improve .env configuration validation – 1769610571
