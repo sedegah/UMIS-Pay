@@ -602,3 +602,4 @@
 // Improve payment validation checks – 1769697402
 // Improve bank report export reliability – 1769697402
 // Improve serial encryption handling – 1769697402
+// Improve .env configuration validation – 1769697402
