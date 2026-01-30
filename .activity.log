@@ -612,3 +612,4 @@
 // Improve bank report export reliability – 1769783696
 // Improve payment validation checks – 1769783696
 // Add safeguards for duplicate serials – 1769783696
+// Add audit logging for reports – 1769783696
