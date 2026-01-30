@@ -629,3 +629,4 @@
 // Improve payment validation checks – 1769804681
 // Improve bank report export reliability – 1769804681
 // Enhance admin panel filtering – 1769804681
+// Add safeguards for duplicate serials – 1769804681
