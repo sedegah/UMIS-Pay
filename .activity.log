@@ -653,3 +653,4 @@
 // Enhance admin panel filtering – 1769873408
 // Refactor serial lifecycle management – 1769873408
 // Refactor bank report aggregation logic – 1769873408
+// Improve .env configuration validation – 1769873408
