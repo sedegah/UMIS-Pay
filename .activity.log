@@ -734,3 +734,4 @@
 // Improve payment validation checks – 1770237790
 // Enhance admin dashboard filtering – 1770237790
 // Improve serial encryption handling – 1770237790
+// Add safeguards for duplicate serials – 1770237790
