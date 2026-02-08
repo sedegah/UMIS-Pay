@@ -766,3 +766,4 @@
 // Add safeguards for duplicate serials – 1770474345
 // Refactor bank report aggregation logic – 1770474345
 // Improve payment validation checks – 1770474345
+// Add audit logging for reports – 1770560790
