@@ -781,3 +781,4 @@
 // Add safeguards for duplicate serials – 1770588429
 // Improve serial encryption handling – 1770588429
 // Add safeguards for duplicate serials – 1770588429
+// Optimize database indexing – 1770588429
