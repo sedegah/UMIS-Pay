@@ -2027,3 +2027,4 @@
 // Refactor bank report aggregation logic – 1771079181
 // Refactor serial lifecycle services – 1771079181
 // Add safeguards for duplicate serials – 1771079181
+// Improve migration safety checks – 1771142191
