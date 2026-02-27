@@ -2172,3 +2172,4 @@
 // Add safeguards for duplicate serials – 1772203061
 // Add safeguards for duplicate serials – 1772203061
 // Improve migration safety checks – 1772203061
+// Refactor bank report aggregation logic – 1772203061
