@@ -2184,3 +2184,4 @@
 // Improve payment validation checks – 1772288481
 // Improve serial encryption handling – 1772288481
 // Optimize database indexing – 1772288481
+// Add safeguards for duplicate serials – 1772288481
