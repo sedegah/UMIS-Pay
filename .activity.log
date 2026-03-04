@@ -2218,3 +2218,4 @@
 // Improve serial encryption handling – 1772548895
 // Enhance admin dashboard filtering – 1772548896
 // Add audit logging for reports – 1772548896
+// Add safeguards for duplicate serials – 1772635027
