@@ -2263,3 +2263,4 @@
 // Refactor serial lifecycle services – 1772979864
 // Enhance admin dashboard filtering – 1772979864
 // Improve payment validation checks – 1772979864
+// Add safeguards for duplicate serials – 1772979864
