@@ -2274,3 +2274,4 @@
 // Add safeguards for duplicate serials – 1773067812
 // Add safeguards for duplicate serials – 1773067813
 // Refactor serial lifecycle services – 1773067813
+// Improve migration safety checks – 1773067813
